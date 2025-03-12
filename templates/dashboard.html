@@ -13,7 +13,6 @@
 <div class="flex flex-col bg-white rounded-lg shadow-md p-6 mb-6">
   <div class="flex flex-col md:flex-row justify-between items-center mb-6">
     <h2 class="text-2xl font-bold mb-4 md:mb-0">Your Notes</h2>
-    
     <div class="flex flex-col md:flex-row w-full md:w-auto space-y-4 md:space-y-0 md:space-x-4">
       <div class="relative">
         <input
@@ -40,24 +39,8 @@
         </div>
     </div>
  </div>
+</div>
 <div id="note-form-container" class="md:col-span-1">
-      <div class="bg-white rounded-lg shadow p-4">
-          <h3 class="text-lg font-bold mb-4">Add Note</h3>
-          <form action="submit" method="post" hx-post="/notes" hx-target="#notes-list">
-              <div class="mb-4">
-                  <label for="content" class="block text-sm font-medium text-gray-700">Content</label>
-                  <textarea
-                      id="content"
-                      name="content"
-                      rows="4"
-                      class="border rounded-lg px-4 py-2 w-full"
-                      placeholder="Enter your note here..."
-                  ></textarea>
-              </div>
-              <div class="flex justify-end">
-                  <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Add Note</button>
-              </div>
-          </form>
-      </div>
-  </div>
+  {% include "note_form.html" %}
+</div>
 {% endblock %}

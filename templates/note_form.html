@@ -1,0 +1,39 @@
+<div class="bg-white rounded-lg shadow p-4">
+  <h3 class="text-lg font-bold mb-4">
+    {% if edit %}
+      Edit Note
+    {% else %}
+      Add Note
+    {% endif %}
+  </h3>
+  <form 
+    action="submit" 
+    method="post"
+    {% if edit %}
+    hx-put="/notes/{{ note.id }}/update" 
+    {% else %}
+    hx-post="/notes/create"
+    {% endif %}
+    hx-target="#notes-list">
+    <div class="mb-4">
+      <label for="content" class="block text-sm font-medium text-gray-700">Content</label>
+      <textarea
+        id="content"
+        name="content"
+        rows="4"
+        class="border rounded-lg px-4 py-2 w-full"
+        placeholder="Enter your note here..."
+      >
+        {% if edit %}
+          {{ note.content }}
+        {% endif %}
+      </textarea>
+    </div>
+    <div class="flex justify-end">
+      <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+       Add Note
+      </button>
+    </div>
+  </form>
+</div>
+
