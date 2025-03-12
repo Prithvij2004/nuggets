@@ -1,5 +1,4 @@
 from typing import Optional
-import uuid
 from fastapi import Depends, Request
 from sqlmodel import Session, select
 
@@ -12,6 +11,8 @@ async def get_current_user(request: Request, session: Session = Depends(get_sess
         return None
     
     query = select(Users).where(Users.id == user_id)
-    user: Users | None= session.exec(query).first()
+    user = session.exec(query).first()
+    if not user:
+        return None
     user.id = str(user.id) #type: ignore
     return user

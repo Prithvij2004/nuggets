@@ -21,6 +21,11 @@ GOOGLE_AUTH_URL=f"https://accounts.google.com/o/oauth2/v2/auth?response_type=cod
 async def login_page(request: Request):
     return templates.TemplateResponse("login.html", {"request": request})
 
+@router.get("/logout")
+async def logout_user(request: Request):
+    request.session.clear()
+    return RedirectResponse(url="/")
+
 @router.get("/auth/google")
 async def google_auth(request: Request):
     state = secrets.token_urlsafe(32)
@@ -38,7 +43,8 @@ async def google_auth_callback(
     stored_state = request.session.get("oauth_state", None)
     if not stored_state or state != stored_state:
         return HTTPException(status_code=400, detail="Invalid state parameter")
-    
+
+    request.session.clear()
     token_url = "https://oauth2.googleapis.com/token"
     data = {
         "code": code,

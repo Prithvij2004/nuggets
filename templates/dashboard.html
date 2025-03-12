@@ -5,43 +5,59 @@
 {% block nav %}
 <div class="flex items-center">
     <span class="mr-4">{{ user.full_name }}</span>
-    <a href="/logout" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">Logout</a>
+    <a href="/users/logout" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">Logout</a>
 </div>
 {% endblock %}
 
 {% block content %}
-<div class="bg-white rounded-lg shadow-md p-6 mb-6">
-    <div class="flex flex-col md:flex-row justify-between items-center mb-6">
-        <h2 class="text-2xl font-bold mb-4 md:mb-0">Your Notes</h2>
-        
-        <div class="flex flex-col md:flex-row w-full md:w-auto space-y-4 md:space-y-0 md:space-x-4">
-            <div class="relative">
-                <input
-                    class="border rounded-lg px-4 py-2 w-full md:w-64 pr-10"
-                    type="text"
-                    placeholder="Search notes..."
-                    hx-get="/notes"
-                    hx-trigger="keyup changed delay:500ms, search"
-                    hx-target="#notes-list"
-                    name="query"
-                >
-                <div class="absolute right-3 top-2.5 text-gray-400">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                    </svg>
-                </div>
-            </div>
-            
-            <button
-                class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
-                hx-get="/new-note"
-                hx-target="#note-form-container"
-                hx-swap="innerHTML"
-            >
-                Create New Note
-            </button>
+<div class="flex flex-col bg-white rounded-lg shadow-md p-6 mb-6">
+  <div class="flex flex-col md:flex-row justify-between items-center mb-6">
+    <h2 class="text-2xl font-bold mb-4 md:mb-0">Your Notes</h2>
+    
+    <div class="flex flex-col md:flex-row w-full md:w-auto space-y-4 md:space-y-0 md:space-x-4">
+      <div class="relative">
+        <input
+            class="border rounded-lg px-4 py-2 w-full md:w-64 pr-10"
+            type="text"
+            placeholder="Search notes..."
+            hx-get="/notes"
+            hx-trigger="keyup changed delay:500ms, search"
+            hx-target="#notes-list"
+            name="query"
+        >
+        <div class="absolute right-3 top-2.5 text-gray-400">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="grid grid-cols-1 gap-6 mb-8">
+    <div class="md:col-span-2">
+        <div id="notes-list">
+            {% include "notes_list.html" %}
         </div>
     </div>
-    
  </div>
+<div id="note-form-container" class="md:col-span-1">
+      <div class="bg-white rounded-lg shadow p-4">
+          <h3 class="text-lg font-bold mb-4">Add Note</h3>
+          <form action="submit" method="post" hx-post="/notes" hx-target="#notes-list">
+              <div class="mb-4">
+                  <label for="content" class="block text-sm font-medium text-gray-700">Content</label>
+                  <textarea
+                      id="content"
+                      name="content"
+                      rows="4"
+                      class="border rounded-lg px-4 py-2 w-full"
+                      placeholder="Enter your note here..."
+                  ></textarea>
+              </div>
+              <div class="flex justify-end">
+                  <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Add Note</button>
+              </div>
+          </form>
+      </div>
+  </div>
 {% endblock %}
