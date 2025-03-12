@@ -11,6 +11,8 @@ class Settings(BaseSettings):
 
     GOOGLE_CLIENT_ID: str
     GOOGLE_CLIENT_SECRET: str
+    REDIRECT_URI: str
+    SESSION_SECRET_KEY: str
 
     # Database Section
     POSTGRES_SERVER: str

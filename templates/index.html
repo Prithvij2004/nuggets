@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}nuggets - Home{% endblock %}
+
+{% block nav %}
+<a href="/users/login" class="bg-white text-blue-600 px-4 py-2 rounded hover:bg-blue-100">Login</a>
+{% endblock %}
+
+{% block content %}
+<div class="text-center py-12">
+    <h2 class="text-4xl font-bold mb-4">Welcome to nuggets</h2>
+    <p class="text-xl mb-8">A simple way to create, manage, and search your notes.</p>
+    
+    <div class="max-w-3xl mx-auto bg-white rounded-lg shadow-lg p-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="text-center p-4">
+                <div class="text-5xl text-blue-500 mb-4">📝</div>
+                <h3 class="text-xl font-semibold mb-2">Create Notes</h3>
+                <p>Quickly jot down ideas, todos, or anything else you want to remember.</p>
+            </div>
+            
+            <div class="text-center p-4">
+                <div class="text-5xl text-blue-500 mb-4">🔍</div>
+                <h3 class="text-xl font-semibold mb-2">Search</h3>
+                <p>Easily find your notes with our powerful search functionality.</p>
+            </div>
+            
+            <div class="text-center p-4">
+                <div class="text-5xl text-blue-500 mb-4">🔒</div>
+                <h3 class="text-xl font-semibold mb-2">Secure Login</h3>
+                <p>Log in with your Google account for a seamless experience.</p>
+            </div>
+        </div>
+        
+        <div class="mt-8 text-center">
+            <a href="/users/login" class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 inline-block">
+                Get Started
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
