@@ -37,8 +37,7 @@ async def dashboard(
             request.session.clear()
             return RedirectResponse(url="/users/login")
         # Here search for all the notes and return it.
-        user_id = request.session.get("user_id")
-        notes = await get_notes_from_userid(user_id, session)
+        notes = await get_notes_from_userid(str(current_user.id), session)
         # print(notes)
         return templates.TemplateResponse("dashboard.html", {"request": request, "user": current_user, "notes": notes})
     except Exception as e:

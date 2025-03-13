@@ -10,7 +10,7 @@
     action="submit" 
     method="post"
     {% if edit %}
-    hx-put="/notes/{{ note.id }}/update" 
+    hx-put="/notes/{{ note.id }}" 
     {% else %}
     hx-post="/notes/create"
     {% endif %}

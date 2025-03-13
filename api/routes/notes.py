@@ -14,15 +14,22 @@ router = APIRouter(prefix="/notes", tags=["notes"])
 template = Jinja2Templates(directory="templates")
 
 @router.get("/", response_class=HTMLResponse)
-async def notes(
+async def get_notes(
     request: Request,
+    word: Optional[str] = None,
     session: Session = Depends(get_session),
     current_user: Optional[Users] = Depends(get_current_user)
 ):
     if not current_user:
         return HTTPException(status_code=400, detail="User not authenticated")
     query = select(Notes).where(Notes.user_id == current_user.id)
+
+    if word:
+        query = query.where(Notes.content.contains(word)) #type: ignore
+    
+    query = query.order_by(Notes.updated_at) #type: ignore
     notes = session.exec(query).all()
+    print(notes)
     notes_list = []
     for note in notes:
         note_dict = note.model_dump()
@@ -45,7 +52,7 @@ async def create_note(
         session.add(note)
         session.commit()
 
-        notes = await get_notes_from_userid(current_user.id, session)
+        notes = await get_notes_from_userid(str(current_user.id), session)
         return template.TemplateResponse("notes_list.html", {"request": request, "notes": notes, "edit": False})
     except Exception as e:
         print(str(e))
@@ -53,7 +60,7 @@ async def create_note(
 
 
 @router.get("/{note_id}", response_class=HTMLResponse)
-async def read_note(
+async def get_note(
     request: Request,
     note_id: str,
     session: Session = Depends(get_session),
@@ -70,7 +77,7 @@ async def read_note(
     note_dict["user_id"] = str(note.user_id)
     return template.TemplateResponse("note_form.html", {"request": request, "note": note_dict, "edit": True})
 
-@router.put("/{note_id}/update", response_class=HTMLResponse)
+@router.put("/{note_id}", response_class=HTMLResponse)
 async def update_post(
     request: Request,
     note_id: str,
@@ -87,7 +94,21 @@ async def update_post(
     note.content = content
     session.add(note)
     session.commit()
-    notes = await get_notes_from_userid(current_user.id, session)
+    notes = await get_notes_from_userid(str(current_user.id), session)
     return template.TemplateResponse("notes_list.html", {"request": request, "notes": notes})
 
-
+@router.delete("/{note_id}", response_class=HTMLResponse)
+async def delete_post(
+    note_id: str,
+    session: Session = Depends(get_session),
+    current_user: Optional[Users] = Depends(get_current_user)
+):
+    if not current_user:
+        return HTTPException(status_code=400, detail="User not authenticated")
+    query = select(Notes).where(Notes.id == note_id, Notes.user_id == current_user.id)
+    note = session.exec(query).first()
+    if not note:
+        return HTTPException(status_code=404, detail="Note not found")
+    session.delete(note)
+    session.commit()
+    return HTMLResponse("")

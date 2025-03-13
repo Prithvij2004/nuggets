@@ -25,7 +25,7 @@ class Notes(SQLModel, table=True):
     user_id: uuid.UUID = Field(foreign_key="users.id", index=True)
     content: str = Field(nullable=False, index=True)
     created_at: Optional[datetime] = Field(default_factory=lambda: datetime.now(timezone.utc), nullable=False, index=True)
-    updated_at: Optional[datetime] = Field(
+    updated_at: datetime = Field(
         default_factory=lambda: datetime.now(timezone.utc),
         sa_column_kwargs={"onupdate":lambda: datetime.now(timezone.utc)},
         nullable=False
